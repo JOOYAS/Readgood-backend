@@ -33,25 +33,29 @@ const Login = async (req, res) => {
 }
 
 const verifyToken = async (req, res) => {
-
-    const token = req.cookies.token
-    console.log("have token")
+    const token = req.cookies.token;
     if (!token) {
-        console.log("no token")
-        return res.status(400).send("no token found")
-    }
-    // verifying is it our token by decoding
-
-    const userData = jwt.verify(token, process.env.TOKEN_PRIVATE_KEY);
-    if (!userData) {
-        console.log("not our Token")
-        return res.status(401).send("fake token")
+        console.log("No token found");
+        return res.status(400).send("No token found");
     }
 
-    //if verified
-    console.log(userData.name)
-    res.json(userData)
+    try {
+        // Verifying the token
+        const userData = jwt.verify(token, process.env.TOKEN_PRIVATE_KEY);
+        
+        if (!userData) {
+            console.log("Not our token");
+            return res.status(401).send("Fake token");
+        }
 
+        // If verified, send user data
+        console.log(userData.name); // Ensure userData has a name field
+        res.json(userData);
+
+    } catch (error) {
+        console.log("Token verification failed:", error.message);
+        return res.status(401).send("Invalid or expired token");
+    }
 }
 
 module.exports = {
