@@ -42,7 +42,7 @@ app.use('/users', userRoutes)
 app.use('/auth0', auth0Routes)
 
 app.listen(port, () => {
-  console.log(`Example app listening on port http://localhost:${port}/`)
+  console.log(`Readgood Backend is now running `)
 })
 
 main()
@@ -50,6 +50,6 @@ main()
   .catch(err => console.log(err))
 
 async function main() {
-  await mongoose.connect('mongodb+srv://sayoojsayu428:mongopassfirst@cluster0.kqwl3fe.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+  await mongoose.connect(process.env.MONGO_DB_LINK)
 
 }
